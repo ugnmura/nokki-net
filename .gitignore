@@ -1,0 +1,5 @@
+image.png
+image3.png
+*.pdf
+nokki-*.png
+.playwright-mcp/
