@@ -1,5 +1,21 @@
+# Source images (regenerate webp via cwebp)
 image.png
 image3.png
 *.pdf
 nokki-*.png
 .playwright-mcp/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store

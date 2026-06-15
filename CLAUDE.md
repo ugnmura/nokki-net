@@ -1,39 +1,55 @@
 # Nokki no Mori — ノッキの森
 
-Static HTML website for **nokki.net** — a creative studio by Akashi Matsumura based in Nagareyama, Chiba, Japan. Focus: digital illustration, self-publishing, 3D design for Japan/EU markets.
+Static Next.js site for **nokki.net** — a creative studio by Akashi Matsumura based in Nagareyama, Chiba, Japan. Focus: digital illustration, self-publishing, 3D design for Japan/EU markets.
+
+Built with **Next.js 15 App Router** and exported as a static site (`output: 'export'`) for GitHub Pages.
 
 ## Files
 
-| File | Description |
+| Path | Description |
 |---|---|
-| `index.html` | Single-file site — all CSS inline, no build step |
-| `image.webp` | Hero illustration (full forest scene, 2.7MB) |
-| `image2.webp` / `image2.png` | Forest kitchen illustration (cooking characters) |
-| `image3.webp` | Cabin door illustration — full-width strip before contact |
+| `app/layout.tsx` | Root layout, fonts, `<head>` |
+| `app/page.tsx` | Single page — all sections (hero, summary, infra, roadmap, contact) |
+| `app/globals.css` | All styles (palette, typography, layout) |
+| `app/icon.svg` | Favicon (auto-picked up by Next.js) |
+| `public/image.webp` | Hero illustration (full forest scene) |
+| `public/image2.webp` / `image2.png` | Forest kitchen illustration (cooking characters) |
+| `public/image3.webp` | Cabin door illustration — full-width strip before contact |
+| `public/CNAME` | `nokki.net` — copied into the build for GitHub Pages |
+| `next.config.mjs` | `output: 'export'`, `trailingSlash: true`, `images.unoptimized: true` |
+| `.github/workflows/deploy.yml` | Build with `next build` and deploy `out/` to GitHub Pages |
 
 The 47MB `image.png` and 31MB `image3.png` originals are gitignored. Re-generate WebPs with:
 ```bash
-cwebp -q 82 image.png -o image.webp
+cwebp -q 82 image.png -o public/image.webp
 ```
 
 ## Local dev
 
 ```bash
-python3 -m http.server 8743
-# open http://localhost:8743
+bun install
+bun run dev
+# open http://localhost:3000
 ```
 
-Share publicly with:
+Production build (writes static site to `out/`):
 ```bash
-ngrok http 8743
+bun run build
+```
+
+Preview the production build:
+```bash
+bunx serve out
 ```
 
 ## Deploy — GitHub Pages → nokki.net
 
-1. Push to `main` on GitHub (`nokki-net` repo)
-2. Settings → Pages → Source: Deploy from branch `main` / `/ (root)`
-3. Add custom domain `nokki.net` in Pages settings
-4. DNS records at your registrar:
+CI builds and deploys automatically on push to `main` via `.github/workflows/deploy.yml`.
+
+One-time setup on GitHub:
+1. Settings → Pages → Source: **GitHub Actions**
+2. Add custom domain `nokki.net` (CNAME file in `public/` keeps this set)
+3. DNS records at registrar:
    - `A` `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
    - `CNAME` `www` → `<github-username>.github.io`
 
